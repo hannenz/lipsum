@@ -27,23 +27,23 @@ For all available options type `lipsum -h`
 
 ~~~
 Usage:
-  lipsum [OPTION...]  - Lorem Ipsum generator
+  lipsum [OPTION...] [count]
 
 Help Options:
   -h, --help              Show help options
 
 Application Options:
   -v, --version           Display version number
-  -H, --html              Output HTML <p> Tags
   --sentence-min=INT      Minimum number of words in a sentence
   --sentence-max=INT      Maximum number of words in a sentence
-  --paragraph-min=INT     Minimum number of words in a paragraph
-  --paragraph-max=INT     Maximum number of words in a paragraph
+  --paragraph-min=INT     Minimum number of sentences in a paragraph
+  --paragraph-max=INT     Maximum number of sentences in a paragraph
   -p, --paragraphs        Count paragraphs
   -s, --sentences         Count sencences
   -w, --words             Count words
   -c, --words             Count characters
   -l, --lorem             Always start with "Lorem ipsum"
   -i, --input-file        Read words from input file
+  -H, --html              Wrap paragraphs in HTML <p> Tags
 ~~~
 

@@ -27,17 +27,17 @@ namespace Lipsum {
 
 		private const GLib.OptionEntry[] options = {
 			{ "version", 'v', 0, OptionArg.NONE, ref show_version, "Display version number", null},
-			{ "html", 'H', 0, OptionArg.NONE, ref html, "Output HTML <p> Tags", null},
 			{ "sentence-min", 0, 0, OptionArg.INT, ref sentence_min_len, "Minimum number of words in a sentence", "INT"},
 			{ "sentence-max", 0, 0, OptionArg.INT, ref sentence_max_len, "Maximum number of words in a sentence", "INT"},
-			{ "paragraph-min", 0, 0, OptionArg.INT, ref paragraph_min_len, "Minimum number of words in a paragraph", "INT"},
-			{ "paragraph-max", 0, 0, OptionArg.INT, ref paragraph_max_len, "Maximum number of words in a paragraph", "INT"},
+			{ "paragraph-min", 0, 0, OptionArg.INT, ref paragraph_min_len, "Minimum number of sentences in a paragraph", "INT"},
+			{ "paragraph-max", 0, 0, OptionArg.INT, ref paragraph_max_len, "Maximum number of sentences in a paragraph", "INT"},
 			{ "paragraphs", 'p', 0, OptionArg.NONE, ref count_paragraphs, "Count paragraphs", null},
 			{ "sentences", 's', 0, OptionArg.NONE, ref count_sentences, "Count sencences", null},
 			{ "words", 'w', 0, OptionArg.NONE, ref count_words, "Count words", null},
 			{ "words", 'c', 0, OptionArg.NONE, ref count_chars, "Count characters", null},
 			{ "lorem", 'l', 0, OptionArg.NONE, ref start_with_lorem_ipsum, "Always start with \"Lorem ipsum\"", null},
 			{ "input-file", 'i', 0, OptionArg.FILENAME, ref input_filename, "Read words from input file", null},
+			{ "html", 'H', 0, OptionArg.NONE, ref html, "Wrap paragraphs in HTML <p> Tags", null},
 			{ null }
 		};
 
@@ -184,7 +184,7 @@ namespace Lipsum {
 		public static int main(string[] args){
 
 			try {
-				var opt_context = new OptionContext(" - Lorem Ipsum generator");
+				var opt_context = new OptionContext("[count]");
 				opt_context.set_help_enabled(true);
 				opt_context.add_main_entries(options, null);
 				opt_context.parse(ref args);
