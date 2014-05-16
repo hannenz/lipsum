@@ -5,26 +5,76 @@
  * @license GNU 
  * @version 2014-05
  *
- * TODO:
- * - random uppercase (option to)
- * - Add Option to read custom text file to use as word base (read file, strip all non-word-chars etc.)
+ * Compile: valac --pkg gio-2.0 lipsum.vala
+ *
  */
 namespace Lipsum {
 
 	public class Lipsum {
-		protected static bool html = false;
-		protected static bool show_version = false;
-		protected static int sentence_min_len = 4;
-		protected static int sentence_max_len = 15;
-		protected static int paragraph_min_len = 2;
-		protected static int paragraph_max_len = 10;
-		protected static bool count_paragraphs =false;
-		protected static bool count_sentences = false;
-		protected static bool count_words = false;
-		protected static bool count_chars = false;
-		protected static bool start_with_lorem_ipsum = false;
-		protected static string input_filename;
 
+		/**
+		 * @var bool  Flag whether to wrap text in html <p> tags
+		 */
+		protected static bool html = false;
+
+		/**
+		 * @var bool  Flag whether to just show version and exit
+		 */
+		protected static bool show_version = false;
+
+		/**
+		 * @var int  Minimum number of words per sentence
+		 */
+		protected static int sentence_min_len = 4;
+
+		/**
+		 * @var int  Maximum number of words per sentence
+		 */
+		protected static int sentence_max_len = 15;
+
+		/**
+		 * @var int  Minimum number of sentences per paragraph
+		 */
+		protected static int paragraph_min_len = 2;
+
+		/**
+		 * @var int  Maximum number of sentences per paragraph
+		 */
+		protected static int paragraph_max_len = 10;
+
+		/**
+		 * @var bool  Flag whether to count paragraphs
+		 */
+		protected static bool count_paragraphs =false;
+
+		/**
+		 * @var bool  Flag whether to count sentences
+		 */
+		protected static bool count_sentences = false;
+
+		/**
+		 * @var bool  Flag whether to count words
+		 */
+		protected static bool count_words = false;
+
+		/**
+		 * @var bool  Flag whether to count characters
+		 */
+		protected static bool count_chars = false;
+
+		/**
+		 * @var bool  Flag whether to start with the words "Lorem ipsum"
+		 */
+		protected static bool start_with_lorem_ipsum = false;
+
+		/**
+		 * @var string  Input filename
+		 */
+		protected static string input_filename = null;
+
+		/**
+		 * Options
+		 */
 		private const GLib.OptionEntry[] options = {
 			{ "version", 'v', 0, OptionArg.NONE, ref show_version, "Display version number", null},
 			{ "sentence-min", 0, 0, OptionArg.INT, ref sentence_min_len, "Minimum number of words in a sentence", "INT"},
@@ -41,6 +91,10 @@ namespace Lipsum {
 			{ null }
 		};
 
+		/**
+		 * Words to use for placeholder text. This is the original "Lorem Ipsum"
+		 * It is possible to read words from a custom text file (-i option)
+		 */
 		protected string[] words = {
 			"Lorem", "ipsum", "dolor", "sit", "amet", "consectetur", "adipisicing", "elit", "sed", "do", "eiusmod",
 			"tempor", "incididunt", "ut", "labore", "et", "dolore", "magna", "aliqua", "Ut", "enim", "ad", "minim",
@@ -50,19 +104,31 @@ namespace Lipsum {
 			"non", "proident", "sunt", "in", "culpa", "qui", "officia", "deserunt", "mollit", "anim", "id", "est", "laborum"
 		};
 
+		/**
+		 * @var string version
+		 */
 		private const string version = "0.1";
 
-
+		/**
+		 * @var Rand  random generator object
+		 */
 		protected Rand random;
 
-
-
+		/**
+		 * Constructor - initialize the random number generator
+		 */
 		public Lipsum() {
 
 			this.random = new Rand();
 
 		}
 
+		/**
+		 * Create a paragraph with n sentences, where n is a random number in the range of
+		 * paragraph_min_len and paragraph_max_len
+		 *
+		 * @return void
+		 */
 		public string create_paragraph() {
 
 			StringBuilder paragraph = new StringBuilder();
@@ -84,9 +150,10 @@ namespace Lipsum {
 		}
 
 		/**
-		 * Create a sentence
-		 * 
-		 * between 4-15 words
+		 * Create a sentence with n words, where n is a random number in the range of
+		 * sentence_min_len and sentence_max_len
+		 *
+		 * @return void
 		 */
 		public string create_sentence(int len = -1) {
 
@@ -117,6 +184,11 @@ namespace Lipsum {
 			return sentence.str;
 		}
 
+		/**
+		 * Generate an output according to the chosen options
+		 *
+		 * @return string  The generated placeholder text
+		 */
 		public string output(int n) {
 
 			string ret = "";
@@ -154,6 +226,11 @@ namespace Lipsum {
 			return ret;
 		}
 
+		/**
+		 * Read words from a custom text file
+		 *
+		 * @return void
+		 */
 		public void read_input_file() {
 			try {
 				string[] custom_words = {};
@@ -165,9 +242,7 @@ namespace Lipsum {
 				while (( line = dis.read_line(null)) != null){
 					if (regex.match(line, 0, out match_info)){
 						while (match_info.matches()){
-							string word = match_info.fetch(0);
-							custom_words += word;
-//							stdout.printf("[%s]\n", match_info.fetch(0));
+							custom_words += match_info.fetch(0);
 							match_info.next();
 						}
 
@@ -181,8 +256,12 @@ namespace Lipsum {
 		}
 
 
+		/**
+		 * main function
+		 */
 		public static int main(string[] args){
 
+			// Parse options
 			try {
 				var opt_context = new OptionContext("[count]");
 				opt_context.set_help_enabled(true);
@@ -194,34 +273,45 @@ namespace Lipsum {
 				stderr.printf("Run %s --help to see a full list of availalbe command line options.\n", args[0]);
 				return 1;
 			}
+
+			// Show version?
 			if (show_version){
 				stdout.printf("%s\n", version);
 				return 0;
 			}
+
+			// Make some assertions and assure that the options/ combinations are sane.
 			assert (sentence_min_len < sentence_max_len);
 			assert (paragraph_min_len < paragraph_max_len);
+
 			if (!count_paragraphs && !count_sentences && !count_words && !count_chars) {
 				count_paragraphs = true;
 			}
+
 			if ((int)count_paragraphs + (int)count_sentences + (int)count_words + (int)count_chars > 1){
 				stderr.printf("Only one of -p, -s, -w or -c flag is allowed\n");
 				return 1;
 			}
 
+			// Create application object
 			var lipsum = new Lipsum();
+
+			// If -i option has been set, read words from file
 			if (input_filename != null){
 				lipsum.read_input_file();
 			}
 
+			// Determine the "count"
 			int n = 1;
 			if (args.length == 2){
 				n = int.parse(args[1]);
 			}
+
+			// Call generator and output result
 			stdout.printf("%s%s\n", start_with_lorem_ipsum ? "Lorem ipsum " : "", lipsum.output(n));
 			return 0;
 		}
 	}
-
 }
 
 
