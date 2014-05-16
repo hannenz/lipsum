@@ -8,9 +8,17 @@
  * Compile: valac --pkg gio-2.0 lipsum.vala
  *
  */
+using Gdk;
+using Gtk;
+
 namespace Lipsum {
 
 	public class Lipsum {
+
+		/**
+		 * @var int Count  Iteration counter
+		 */
+		protected static int count = 1;
 
 		/**
 		 * @var bool  Flag whether to wrap text in html <p> tags
@@ -73,6 +81,11 @@ namespace Lipsum {
 		protected static string input_filename = null;
 
 		/**
+		 * @var bool GUI
+		 */
+		protected static bool gui_mode = false;
+
+		/**
 		 * Options
 		 */
 		private const GLib.OptionEntry[] options = {
@@ -88,6 +101,7 @@ namespace Lipsum {
 			{ "lorem", 'l', 0, OptionArg.NONE, ref start_with_lorem_ipsum, "Always start with \"Lorem ipsum\"", null},
 			{ "input-file", 'i', 0, OptionArg.FILENAME, ref input_filename, "Read words from input file", null},
 			{ "html", 'H', 0, OptionArg.NONE, ref html, "Wrap paragraphs in HTML <p> Tags", null},
+			{ "gui", 'g', 0, OptionArg.NONE, ref gui_mode, "Graphical user interface", null},
 			{ null }
 		};
 
@@ -189,36 +203,36 @@ namespace Lipsum {
 		 *
 		 * @return string  The generated placeholder text
 		 */
-		public string output(int n) {
+		public string output() {
 
 			string ret = "";
 
 			if (count_paragraphs) {
-				for (int i = 0; i < n ; i++){
+				for (int i = 0; i < count ; i++){
 					ret += this.create_paragraph();
-					if (i < n - 1) {
+					if (i < count - 1) {
 						ret += "\n\n";
 					}
 				}
 			}
 			else if (count_sentences) {
-				for (int i = 0; i < n ; i++){
+				for (int i = 0; i < count ; i++){
 					ret += this.create_sentence();
-					if (i < n - 1){
+					if (i < count - 1){
 						ret += " ";
 					}
 				}
 			}
 			else if (count_words) {
-				ret = create_sentence(n);
+				ret = create_sentence(count);
 			}
 			else if (count_chars){
 				do {
 					ret = "";
 					do {
 						ret += this.create_sentence();
-					} while (ret.length < n);
-					ret = ret.substring(0, n);
+					} while (ret.length < count);
+					ret = ret.substring(0, count);
 				}
 				while (ret.substring(ret.length - 1, 1) == " "); // Don't allow character sequences ending with a space
 			}
@@ -255,6 +269,88 @@ namespace Lipsum {
 			}
 		}
 
+		public void gui(){
+
+			var clipboard = Gtk.Clipboard.get_for_display(Display.get_default(), Gdk.SELECTION_CLIPBOARD);
+
+			var win = new Gtk.Window();
+			win.set_border_width(6);
+			win.destroy.connect(Gtk.main_quit);
+			win.set_default_size(400, 400);
+
+			var vbox = new Box(Orientation.VERTICAL, 0);
+
+			var swin = new ScrolledWindow(null, null);
+			var text_view = new TextView();
+
+			vbox.pack_start(swin, true, true, 0);
+
+			text_view.set_wrap_mode(Gtk.WrapMode.WORD);
+			text_view.buffer.text = this.output();
+			swin.add(text_view);
+
+			var grid = new Gtk.Grid();
+
+			var lorem_cb = new CheckButton.with_label("Start with \"Lorem ipsum\"");
+			var html_cb = new CheckButton.with_label("Wrap paragraphs in HTML <p> Tags");
+			lorem_cb.set_active(start_with_lorem_ipsum);
+			html_cb.set_active(html);
+
+			grid.attach(lorem_cb, 0, 1, 1, 1);
+			grid.attach(html_cb, 0, 2, 1, 1);
+
+			var spin_button = new Gtk.SpinButton.with_range(1, 1000, 1);
+			spin_button.set_value(count);
+
+			var radio1 = new RadioButton.with_label(null, "Paragraphs");
+			var radio2 = new RadioButton.with_label_from_widget(radio1, "Sentences");
+			var radio3 = new RadioButton.with_label_from_widget(radio1, "Words");
+			var radio4 = new RadioButton.with_label_from_widget(radio1, "Characters");
+
+			var button_box = new ButtonBox(Orientation.HORIZONTAL);
+			var generate_button = new Button.with_label("Generate");
+			var copy_button = new Button.with_label("Copy to clipboard");
+			var copy_close_button = new Button.with_label("Copy and close");
+
+			grid.attach(spin_button, 1, 1, 1, 1);
+			grid.attach(radio1, 1, 2, 1, 1);
+			grid.attach(radio2, 1, 3, 1, 1);
+			grid.attach(radio3, 1, 4, 1, 1);
+			grid.attach(radio4, 1, 5, 1, 1);
+
+			generate_button.clicked.connect( () => {
+
+					count = spin_button.get_value_as_int();
+					count_paragraphs = radio1.get_active();
+					count_sentences = radio2.get_active();
+					count_words = radio3.get_active();
+					count_chars = radio4.get_active();
+					start_with_lorem_ipsum = lorem_cb.get_active();
+					html = html_cb.get_active();
+
+					text_view.buffer.text = this.output();
+				});
+
+			copy_button.clicked.connect( () => {
+					clipboard.set_text(text_view.buffer.text, -1);
+				});
+
+			copy_close_button.clicked.connect( () => {
+					clipboard.set_text(text_view.buffer.text, -1);
+					Gtk.main_quit();
+				});
+
+			vbox.pack_start(grid, false, false, 0);
+
+			button_box.add(copy_close_button);
+			button_box.add(copy_button);
+			button_box.add(generate_button);
+
+			vbox.pack_start(button_box, false, false, 0);
+
+			win.add(vbox);
+			win.show_all();
+		}
 
 		/**
 		 * main function
@@ -293,25 +389,32 @@ namespace Lipsum {
 				return 1;
 			}
 
+			// Determine the "count"
+			if (args.length == 2){
+				count = int.parse(args[1]);
+			}
+
 			// Create application object
 			var lipsum = new Lipsum();
 
-			// If -i option has been set, read words from file
-			if (input_filename != null){
-				lipsum.read_input_file();
+			if (gui_mode){
+				Gtk.init(ref args);
+				lipsum.gui();
+				Gtk.main();
 			}
+			else {
 
-			// Determine the "count"
-			int n = 1;
-			if (args.length == 2){
-				n = int.parse(args[1]);
+				// If -i option has been set, read words from file
+				if (input_filename != null){
+					lipsum.read_input_file();
+				}
+
+
+				// Call generator and output result
+				stdout.printf("%s%s\n", start_with_lorem_ipsum ? "Lorem ipsum " : "", lipsum.output());
 			}
-
-			// Call generator and output result
-			stdout.printf("%s%s\n", start_with_lorem_ipsum ? "Lorem ipsum " : "", lipsum.output(n));
 			return 0;
 		}
 	}
 }
-
 
