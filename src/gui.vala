@@ -49,7 +49,7 @@ namespace Lipsum {
 
 				var builder = new Builder();
 
-				builder.add_from_file("src/ui.glade");
+				builder.add_from_file("/usr/local/share/lipsum/lipsum.glade");
 				builder.connect_signals(this);
 
 				var vbox = builder.get_object("main_vbox") as Gtk.Box;

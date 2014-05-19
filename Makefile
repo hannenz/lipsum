@@ -9,6 +9,10 @@ $(PRG): $(SRC)
 
 install:
 	cp $(PRG) /usr/local/bin/
+	if [ ! -e /usr/local/share/lipsum ] ; then mkdir /usr/local/share/lipsum ; fi
+	cp src/lipsum.glade /usr/local/share/lipsum/
+
+
 
 clean:
 	rm $(PRG)
