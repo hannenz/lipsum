@@ -2,12 +2,14 @@
  * CLI Lorem Ipsum Generator
  *
  * @author Johannes Braun <me@hannenz.de>
- * @license GNU 
+ * @license GNU
  * @version 2014-05
  *
  * Compile: valac --pkg gio-2.0 lipsum.vala
  *
  */
+using Gtk;
+
 namespace Lipsum {
 
 	public class Lipsum {
@@ -127,6 +129,11 @@ namespace Lipsum {
 				string text = generator.generate();
 
 				stdout.printf("%s\n", text);
+
+				// var display = Gdk.Display.get_default();
+				// var clipboard = Gtk.Clipboard.get_for_display(display, Gdk.SELECTION_CLIPBOARD);
+				// clipboard.set_text(text, -1);
+
 			}
 			return 0;
 		}

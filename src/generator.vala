@@ -201,6 +201,7 @@ namespace Lipsum {
 				while (ret.substring(ret.length - 1, 1) == " "); // Don't allow character sequences ending with a space
 			}
 
+
 			return ret;
 		}
 

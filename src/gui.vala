@@ -39,8 +39,9 @@ namespace Lipsum {
 			this.clipboard = Gtk.Clipboard.get_for_display(Display.get_default(), Gdk.SELECTION_CLIPBOARD);
 
 			this.build_gui();
+			this.border_width = 10;
 			this.destroy.connect(Gtk.main_quit);
-			this.title = "Lipsum dummy text generator";
+			this.title = "Lipsum";
 		}
 
 		public void build_gui(){
@@ -53,7 +54,8 @@ namespace Lipsum {
 				builder.connect_signals(this);
 
 				var vbox = builder.get_object("main_vbox") as Gtk.Box;
-				vbox.reparent(this);
+				vbox.get_parent().remove(vbox);
+				this.add(vbox);
 
 				this.text_view = builder.get_object("textview") as TextView;
 				this.text_view.set_wrap_mode(Gtk.WrapMode.WORD);
