@@ -40,6 +40,7 @@ namespace Lipsum {
 
 			this.build_gui();
 			this.border_width = 10;
+			this.set_default_size(300, 400);
 			this.destroy.connect(Gtk.main_quit);
 			this.title = "Lipsum";
 		}
@@ -58,6 +59,10 @@ namespace Lipsum {
 				this.add(vbox);
 
 				this.text_view = builder.get_object("textview") as TextView;
+				this.text_view.set_left_margin(6);
+				this.text_view.set_right_margin(6);
+				this.text_view.set_top_margin(6);
+				this.text_view.set_bottom_margin(6);
 				this.text_view.set_wrap_mode(Gtk.WrapMode.WORD);
 				this.text_view.buffer.text = this.generator.generate();
 
@@ -82,7 +87,7 @@ namespace Lipsum {
 				this.lorem_cb = builder.get_object("lorem_checkbutton") as CheckButton;
 				this.lorem_cb.set_active(this.generator.start_with_lorem_ipsum);
 
-				this.set_default_size(400, 600);
+				this.set_default_size(360, 360);
 				this.show_all();
 			}
 			catch (Error e){
