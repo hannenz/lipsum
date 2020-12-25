@@ -5,8 +5,6 @@
  * @license GNU
  * @version 2014-05
  *
- * Compile: valac --pkg gio-2.0 lipsum.vala
- *
  */
 using Gtk;
 
@@ -49,7 +47,7 @@ namespace Lipsum {
 			{ "paragraphs", 'p', 0, OptionArg.NONE, ref count_paragraphs, "Count paragraphs", null},
 			{ "sentences", 's', 0, OptionArg.NONE, ref count_sentences, "Count sencences", null},
 			{ "words", 'w', 0, OptionArg.NONE, ref count_words, "Count words", null},
-			{ "words", 'c', 0, OptionArg.NONE, ref count_chars, "Count characters", null},
+			{ "chars", 'c', 0, OptionArg.NONE, ref count_chars, "Count characters", null},
 			{ "lorem", 'l', 0, OptionArg.NONE, ref start_with_lorem_ipsum, "Always start with \"Lorem ipsum\"", null},
 			{ "input-file", 'i', 0, OptionArg.FILENAME, ref input_filename, "Read words from input file", null},
 			{ "html", 'H', 0, OptionArg.NONE, ref html, "Wrap paragraphs in HTML <p> Tags", null},
@@ -118,23 +116,19 @@ namespace Lipsum {
 			generator.html = html;
 
 			if (gui_mode){
-				Gtk.init(ref args);
 
-				new Gui.with_generator(generator);
-
-				Gtk.main();
+				var app = new Application.with_generator(generator);
+				return app.run(args);
 			}
 			else {
 
 				string text = generator.generate();
-
 				stdout.printf("%s\n", text);
 
-				// var display = Gdk.Display.get_default();
-				// var clipboard = Gtk.Clipboard.get_for_display(display, Gdk.SELECTION_CLIPBOARD);
+				// var clipboard = Gtk.Clipboard.get_default(Gdk.Display.get_default());
 				// clipboard.set_text(text, -1);
-
 			}
+
 			return 0;
 		}
 	}
