@@ -23,6 +23,131 @@
         <property name="can_focus">False</property>
         <property name="orientation">vertical</property>
         <child>
+          <placeholder/>
+        </child>
+        <child>
+          <object class="GtkBox">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="spacing">38</property>
+            <child>
+              <placeholder/>
+            </child>
+            <child>
+              <object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Generate</property>
+              </object>
+              <packing>
+                <property name="expand">True</property>
+                <property name="fill">True</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkSpinButton" id="amount_spinbutton">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="invisible_char">•</property>
+                <property name="text" translatable="yes">1</property>
+                <property name="shadow_type">none</property>
+                <property name="progress_pulse_step">0.10999999940395355</property>
+                <property name="adjustment">adjustment1</property>
+                <property name="climb_rate">1</property>
+                <property name="value">1</property>
+                <signal name="value-changed" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButtonBox">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="homogeneous">True</property>
+                <property name="layout_style">expand</property>
+                <child>
+                  <object class="GtkToggleButton" id="chars_togglebutton">
+                    <property name="label" translatable="yes">Characters</property>
+                    <property name="name">chars</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="toggled" handler="lipsum_window_on_chars_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="words_toggle_button">
+                    <property name="label" translatable="yes">Words</property>
+                    <property name="name">words</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="toggled" handler="lipsum_window_on_words_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="sentences_toggle_button">
+                    <property name="label" translatable="yes">Sentences</property>
+                    <property name="name">sentences</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="toggled" handler="lipsum_window_on_sentences_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+                <child>
+                  <object class="GtkToggleButton" id="paragraphs_toggle_button">
+                    <property name="label" translatable="yes">paragraphs</property>
+                    <property name="name">paragraphs</property>
+                    <property name="visible">True</property>
+                    <property name="can_focus">True</property>
+                    <property name="receives_default">True</property>
+                    <signal name="toggled" handler="lipsum_window_on_paragraphs_toggled" swapped="no"/>
+                  </object>
+                  <packing>
+                    <property name="expand">True</property>
+                    <property name="fill">True</property>
+                    <property name="position">3</property>
+                  </packing>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">True</property>
+                <property name="position">3</property>
+              </packing>
+            </child>
+            <child>
+              <placeholder/>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
           <object class="GtkScrolledWindow" id="scrolledwindow1">
             <property name="visible">True</property>
             <property name="can_focus">True</property>
@@ -37,7 +162,7 @@
           <packing>
             <property name="expand">True</property>
             <property name="fill">True</property>
-            <property name="position">1</property>
+            <property name="position">2</property>
           </packing>
         </child>
         <child>
@@ -72,7 +197,7 @@
                 <property name="receives_default">False</property>
                 <property name="xalign">0</property>
                 <property name="draw_indicator">True</property>
-                <signal name="toggled" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
+                <signal name="toggled" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -88,7 +213,7 @@
                 <property name="receives_default">False</property>
                 <property name="xalign">0</property>
                 <property name="draw_indicator">True</property>
-                <signal name="toggled" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
+                <signal name="toggled" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">0</property>
@@ -106,7 +231,7 @@
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">paragraphs_radiobutton</property>
-                <signal name="toggled" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
+                <signal name="toggled" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -127,22 +252,6 @@
               </packing>
             </child>
             <child>
-              <object class="GtkSpinButton" id="amount_spinbutton">
-                <property name="visible">True</property>
-                <property name="can_focus">True</property>
-                <property name="invisible_char">•</property>
-                <property name="shadow_type">none</property>
-                <property name="progress_pulse_step">0.10999999940395355</property>
-                <property name="adjustment">adjustment1</property>
-                <property name="climb_rate">1</property>
-                <signal name="value-changed" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
-              </object>
-              <packing>
-                <property name="left_attach">1</property>
-                <property name="top_attach">1</property>
-              </packing>
-            </child>
-            <child>
               <object class="GtkRadioButton" id="paragraphs_radiobutton">
                 <property name="label" translatable="yes">Paragraphs</property>
                 <property name="use_action_appearance">False</property>
@@ -152,7 +261,7 @@
                 <property name="xalign">0</property>
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
-                <signal name="toggled" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
+                <signal name="toggled" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -170,7 +279,7 @@
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">paragraphs_radiobutton</property>
-                <signal name="toggled" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
+                <signal name="toggled" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -188,7 +297,7 @@
                 <property name="active">True</property>
                 <property name="draw_indicator">True</property>
                 <property name="group">paragraphs_radiobutton</property>
-                <signal name="toggled" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
+                <signal name="toggled" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="left_attach">2</property>
@@ -223,11 +332,14 @@
             <child>
               <placeholder/>
             </child>
+            <child>
+              <placeholder/>
+            </child>
           </object>
           <packing>
             <property name="expand">False</property>
             <property name="fill">False</property>
-            <property name="position">2</property>
+            <property name="position">3</property>
           </packing>
         </child>
         <child>
@@ -243,7 +355,7 @@
                 <property name="can_focus">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="lipsum_gui_on_copy_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="lipsum_window_on_copy_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -260,7 +372,7 @@
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
                 <property name="xalign">0.50999999046325684</property>
-                <signal name="clicked" handler="lipsum_gui_on_copy_close_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="lipsum_window_on_copy_close_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -278,7 +390,7 @@
                 <property name="has_default">True</property>
                 <property name="receives_default">True</property>
                 <property name="use_stock">True</property>
-                <signal name="clicked" handler="lipsum_gui_on_generate_button_clicked" swapped="no"/>
+                <signal name="clicked" handler="lipsum_window_on_generate_button_clicked" swapped="no"/>
               </object>
               <packing>
                 <property name="expand">False</property>
@@ -291,7 +403,7 @@
           <packing>
             <property name="expand">False</property>
             <property name="fill">True</property>
-            <property name="position">3</property>
+            <property name="position">4</property>
           </packing>
         </child>
       </object>
