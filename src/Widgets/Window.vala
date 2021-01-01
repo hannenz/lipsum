@@ -21,19 +21,15 @@ namespace Lipsum {
 
 		protected RadioButton count_chars_rb;
 
-		protected ToggleButton chars_toggle_button;
-		protected ToggleButton words_toggle_button;
-		protected ToggleButton sentences_toggle_button;
-		protected ToggleButton paragraphs_toggle_button;
+		protected Switch html_switch;
 
-		protected CheckButton html_cb;
-
-		protected CheckButton lorem_cb;
+		protected Switch lorem_switch;
 
 		protected Button generate_button;
 
 		protected Generator generator;
 
+		protected HeaderBar header;
 
 		private uint configure_id;
 
@@ -63,17 +59,11 @@ namespace Lipsum {
 			}
 
 
-			var header = new Gtk.HeaderBar();
-			header.title = "Lipsum";
-			header.get_style_context().add_class("default-decoration");
-			header.show_close_button = true;
-			header.decoration_layout = "close:";
-			set_titlebar(header);
-
 			this.clipboard = Gtk.Clipboard.get_for_display(Gdk.Display.get_default(), Gdk.SELECTION_CLIPBOARD);
 
-			this.build_gui();
+			Application.settings.get("count", "i", out this.generator.count);
 
+			this.build_gui();
 			this.show_all();
 
 			this.on_generate_button_clicked(this.generate_button);
@@ -89,9 +79,7 @@ namespace Lipsum {
 			try {
 
 				var builder = new Builder();
-
-				builder.add_from_file("/usr/local/share/lipsum/lipsum.glade");
-				builder.connect_signals(this);
+				builder.add_from_resource("/de/hannenz/lipsum/data/ui/window.ui");
 
 				var vbox = builder.get_object("main_vbox") as Gtk.Box;
 				vbox.get_parent().remove(vbox);
@@ -99,52 +87,81 @@ namespace Lipsum {
 
 				this.border_width = 10;
 				this.text_view = builder.get_object("textview") as TextView;
-				this.text_view.set_left_margin(6);
-				this.text_view.set_right_margin(6);
-				this.text_view.set_top_margin(6);
-				this.text_view.set_bottom_margin(6);
 				this.text_view.set_wrap_mode(Gtk.WrapMode.WORD);
 				this.text_view.buffer.text = this.generator.generate();
 
 				this.spin_button = builder.get_object("amount_spinbutton") as SpinButton;
-				this.spin_button.set_value(3);
-
 				this.spin_button.set_value(this.generator.count);
-
-				this.count_paragraphs_rb = builder.get_object("paragraphs_radiobutton") as RadioButton;
-				this.count_paragraphs_rb.set_active(this.generator.count_paragraphs);
-
-				this.count_sentences_rb = builder.get_object("sentences_radiobutton") as RadioButton;
-				this.count_sentences_rb.set_active(this.generator.count_sentences);
-
-				this.count_words_rb = builder.get_object("words_radiobutton") as RadioButton;
-				this.count_words_rb.set_active(this.generator.count_words);
+				this.spin_button.changed.connect( () => {
+					Application.settings.set("count", "i", (uint)this.spin_button.get_value());
+				});
 
 				this.count_chars_rb = builder.get_object("chars_radiobutton") as RadioButton;
+				this.count_words_rb = builder.get_object("words_radiobutton") as RadioButton;
+				this.count_sentences_rb = builder.get_object("sentences_radiobutton") as RadioButton;
+				this.count_paragraphs_rb = builder.get_object("paragraphs_radiobutton") as RadioButton;
+
 				this.count_chars_rb.set_active(this.generator.count_chars);
+				this.count_words_rb.set_active(this.generator.count_words);
+				this.count_sentences_rb.set_active(this.generator.count_sentences);
+				this.count_paragraphs_rb.set_active(this.generator.count_paragraphs);
 
-				this.chars_toggle_button = builder.get_object("chars_toggle_button") as ToggleButton;
-				this.chars_toggle_button.set_active(this.generator.count_chars);
-				this.words_toggle_button = builder.get_object("words_toggle_button") as ToggleButton;
-				this.words_toggle_button.set_active(this.generator.count_words);
-				this.sentences_toggle_button = builder.get_object("sentences_toggle_button") as ToggleButton;
-				this.sentences_toggle_button.set_active(this.generator.count_sentences);
-				this.paragraphs_toggle_button = builder.get_object("paragraphs_toggle_button") as ToggleButton;
-				this.paragraphs_toggle_button.set_active(this.generator.count_paragraphs);
-
-				this.html_cb = builder.get_object("html_checkbutton") as CheckButton;
-				this.html_cb.set_active(this.generator.html);
-
-				this.lorem_cb = builder.get_object("lorem_checkbutton") as CheckButton;
-				this.lorem_cb.set_active(this.generator.start_with_lorem_ipsum);
+				string selected;
+				Application.settings.get("selected", "s", out selected);
+				switch (selected) {
+					case "chars":
+						this.count_chars_rb.set_active(true);
+						break;
+					case "words":
+						this.count_words_rb.set_active(true);
+						break;
+					case "sentences":
+						this.count_sentences_rb.set_active(true);
+						break;
+					case "paragraphs":
+						this.count_paragraphs_rb.set_active(true);
+						break;
+				}
 
 				this.generate_button = builder.get_object("generate_button") as Button;
 
+
+				header = new Gtk.HeaderBar();
+				header.title = "Lipsum";
+				header.get_style_context().add_class("default-decoration");
+				header.show_close_button = true;
+				header.decoration_layout = "close:";
+
+				var menu_button = new MenuButton();
+				menu_button.set_use_popover(true);
+				menu_button.image = new Gtk.Image.from_icon_name("open-menu-symbolic", Gtk.IconSize.SMALL_TOOLBAR);
+				header.pack_end(menu_button);
+
+				var menu_popover = new Gtk.Popover(menu_button);
+				menu_button.popover = menu_popover;
+
+				builder.add_from_resource("/de/hannenz/lipsum/data/ui/popover.ui");
+				builder.connect_signals(this);
+				var grid = builder.get_object("popover_grid") as Gtk.Grid;
+				menu_popover.add(grid);
+
+				this.lorem_switch = builder.get_object("lorem_switch") as Gtk.Switch;
+				this.html_switch = builder.get_object("html_switch") as Gtk.Switch;
+				Application.settings.get("lorem", "b", out this.generator.start_with_lorem_ipsum);
+				Application.settings.get("html", "b", out this.generator.html);
+				lorem_switch.set_active(this.generator.start_with_lorem_ipsum);
+				html_switch.set_active(this.generator.html);
+
+				set_titlebar(header);
+
+				builder.connect_signals(this);
 			}
 			catch (Error e){
 				error("%s\n", e.message);
 			}
 		}
+
+
 
 		/**
 		 * Callbacks
@@ -165,10 +182,26 @@ namespace Lipsum {
 			this.generator.count_sentences = this.count_sentences_rb.get_active();
 			this.generator.count_words = this.count_words_rb.get_active();
 			this.generator.count_chars = this.count_chars_rb.get_active();
-			this.generator.start_with_lorem_ipsum = this.lorem_cb.get_active();
-			this.generator.html = this.html_cb.get_active();
+
+			Application.settings.get("lorem", "b", out this.generator.start_with_lorem_ipsum);
+			Application.settings.get("html", "b", out this.generator.html);
+
 			text_view.buffer.text = this.generator.generate();
+
+			if (this.count_chars_rb.get_active()) {
+				Application.settings.set("selected", "s", "chars");
+			}
+			else if (this.count_words_rb.get_active()) {
+				Application.settings.set("selected", "s", "words");
+			}
+			else if (this.count_sentences_rb.get_active()) {
+				Application.settings.set("selected", "s", "sentences");
+			}
+			else if (this.count_paragraphs_rb.get_active()) {
+				Application.settings.set("selected", "s", "paragraphs");
+			}
 		}
+
 
 		[CCode (instance_pos = -1)]
 		protected void on_copy_button_clicked(Button source) {
@@ -182,6 +215,19 @@ namespace Lipsum {
 			this.application.quit();
 		}
 
+		[CCode (instance_pos = -1)]
+		protected void on_lorem_switch_activated(Switch the_switch) {
+			// this.generator.start_with_lorem_ipsum = the_switch.get_state();
+			Application.settings.set("lorem", "b", the_switch.get_state());
+			this.on_generate_button_clicked(this.generate_button);
+			// update();
+		}
+
+		[CCode (instance_pos = -1)]
+		protected void on_html_switch_activated(Switch the_switch) {
+			this.generator.html = the_switch.get_state();
+			Application.settings.set("html", "b", this.generator.html);
+		}
 
 		public override bool configure_event(Gdk.EventConfigure event) {
 			if (configure_id != 0) {
@@ -202,54 +248,6 @@ namespace Lipsum {
 			});
 
 			return base.configure_event(event);
-		}
-
-		protected void update() {
-			this.on_generate_button_clicked(this.generate_button);
-		}
-
-		public void on_chars_toggled(ToggleButton btn) {
-			this.generator.count_chars = true;
-			this.generator.count_words = false;
-			this.generator.count_sentences = false;
-			this.generator.count_paragraphs = false;
-			this.words_toggle_button.set_active(false);
-			this.sentences_toggle_button.set_active(false);
-			this.paragraphs_toggle_button.set_active(false);
-			update();
-		}
-
-		public void on_words_toggled(ToggleButton btn) {
-			this.generator.count_chars = false;
-			this.generator.count_words = true;
-			this.generator.count_sentences = false;
-			this.generator.count_paragraphs = false;
-			this.chars_toggle_button.set_active(false);
-			this.sentences_toggle_button.set_active(false);
-			this.paragraphs_toggle_button.set_active(false);
-			update();
-		}
-
-		public void on_sentences_toggled(ToggleButton btn) {
-			this.generator.count_chars = false;
-			this.generator.count_words = false;
-			this.generator.count_sentences = true;
-			this.generator.count_paragraphs = false;
-			this.chars_toggle_button.set_active(false);
-			this.words_toggle_button.set_active(false);
-			this.paragraphs_toggle_button.set_active(false);
-			update();
-		}
-
-		public void on_paragraphs_toggled(ToggleButton btn) {
-			this.generator.count_chars = false;
-			this.generator.count_words = false;
-			this.generator.count_sentences = false;
-			this.generator.count_paragraphs = true;
-			this.chars_toggle_button.set_active(false);
-			this.words_toggle_button.set_active(false);
-			this.sentences_toggle_button.set_active(false);
-			update();
 		}
 	}
 }

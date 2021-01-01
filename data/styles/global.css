@@ -16,7 +16,7 @@
  * Authored by Johannes Braun <hannenz@posteo.de>
  */
 
- @define-color colorPrimary @GRAPE_500;
- @define-color colorAccent @GRAPE_500;
+ @define-color colorPrimary @ORANGE_700;
+ @define-color colorAccent @ORANGE_700;
  @define-color textColorPrimary shade (white, 0.9);
  @define-color textColorPrimaryShadow alpha (shade (@colorPrimary, 0.5), 0.6);

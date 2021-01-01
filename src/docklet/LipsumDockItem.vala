@@ -46,7 +46,7 @@ namespace Lipsum {
 
 
 			try {
-				icon_pixbuf = new Gdk.Pixbuf.from_resource(Lipsum.G_RESOURCE_PATH + "/src/docklet/icons/lipsum_icon.png");
+				icon_pixbuf = new Gdk.Pixbuf.from_resource(Lipsum.G_RESOURCE_PATH + "/src/docklet/icons/lipsum_icon.svg");
 			}
 			catch (Error e) {
 				warning("Error: " + e.message);

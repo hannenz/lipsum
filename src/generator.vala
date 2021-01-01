@@ -157,6 +157,7 @@ namespace Lipsum {
 					sentence.append_c('.');
 				}
 			}
+
 			// Upercase the first letter
 			sentence.overwrite(0, sentence.str.substring(0, 1).up());
 			return sentence.str;
@@ -186,6 +187,15 @@ namespace Lipsum {
 						ret += " ";
 					}
 				}
+
+				if (this.start_with_lorem_ipsum) {
+					ret = "Lorem ipsum " + ret;
+				}
+
+				if (html) {
+					ret = "<p>%s</p>".printf(ret);
+				}
+
 			}
 			else if (count_words) {
 				ret = create_sentence(count);

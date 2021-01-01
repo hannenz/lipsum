@@ -21,6 +21,20 @@
 		<summary>Amount</summary>
 		<description>Amount of dummy text units to generate (paragraphs, sentences, words, characters)</description>
 	</key>
+	<key name="selected" type="s">
+		<default>"paragraphs"</default>
+		<summary>Last selected count parameter</summary>
+		<description></description>
+	</key>
+	<key name="html" type="b">
+		<default>false</default>
+		<summary>Wrap text in HTML p tags</summary>
+		<description></description>
+	</key>
+	<key name="lorem" type="b">
+		<default>true</default>
+		<summary>Start with lorem ipsum</summary>
+		<description>If true, every paragraph will start with the two words "Lorem ipsum"</description>
+	</key>
   </schema>
 </schemalist>
-

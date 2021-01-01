@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <gresources>
 	<gresource prefix="/de/hannenz/lipsum">
-		<file alias="styles/global.css">data/styles/global.css</file>
+		<file>data/styles/global.css</file>
+		<file>data/ui/window.ui</file>
+		<file>data/ui/popover.ui</file>
+		<file>data/ui/menu.ui</file>
+		<file>data/ui/dialog.ui</file>
 	</gresource>
 </gresources>

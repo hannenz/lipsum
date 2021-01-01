@@ -93,9 +93,6 @@ namespace Lipsum {
 			}
 
 
-			// Create application object
-			//var lipsum = new Lipsum();
-
 			// Create generator
 			var generator = new Generator();
 			// Determine the "count"
@@ -116,17 +113,12 @@ namespace Lipsum {
 			generator.html = html;
 
 			if (gui_mode){
-
 				var app = new Application.with_generator(generator);
 				return app.run(args);
 			}
 			else {
-
 				string text = generator.generate();
 				stdout.printf("%s\n", text);
-
-				// var clipboard = Gtk.Clipboard.get_default(Gdk.Display.get_default());
-				// clipboard.set_text(text, -1);
 			}
 
 			return 0;

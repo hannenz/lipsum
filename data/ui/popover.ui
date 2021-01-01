@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<interface>
+	<requires lib="gtk+" version="3.12"/>
+	<object class="GtkGrid" id="popover_grid">
+		<property name="visible">True</property>
+		<property name="can_focus">False</property>
+		<property name="row_spacing">10</property>
+		<property name="column_spacing">10</property>
+		<property name="row_homogeneous">True</property>
+		<property name="margin_left">10</property>
+		<property name="margin_right">10</property>
+		<property name="margin_top">10</property>
+		<property name="margin_bottom">10</property>
+		<child>
+			<object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+				<property name="label" translatable="yes">Start with "Lorem Ipsum"</property>
+			</object>
+			<packing>
+				<property name="left_attach">0</property>
+				<property name="top_attach">0</property>
+			</packing>
+		</child>
+		<child>
+			<object class="GtkSwitch" id="lorem_switch">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+				<signal name="notify::active" handler="lipsum_window_on_lorem_switch_activated" swapped="no" />
+			</object>
+			<packing>
+				<property name="left_attach">1</property>
+				<property name="top_attach">0</property>
+			</packing>
+		</child>
+		<child>
+			<object class="GtkLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+				<property name="label" translatable="yes">Wrap in HTML &lt;p&gt; Tags</property>
+			</object>
+			<packing>
+				<property name="left_attach">0</property>
+				<property name="top_attach">1</property>
+			</packing>
+		</child>
+		<child>
+			<object class="GtkSwitch" id="html_switch">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+				<signal name="notify::active" handler="lipsum_window_on_html_switch_activated" swapped="no" />
+			</object>
+			<packing>
+				<property name="left_attach">1</property>
+				<property name="top_attach">1</property>
+			</packing>
+		</child>
+	</object>
+</interface>
