@@ -8,8 +8,8 @@ VALAFLAGS = $(patsubst %, --pkg %, $(PACKAGES))  -X -fPIC -X -shared --library=$
 RESOURCES=data/styles/global.css
 
 # SRC=$(wildcard src/*.vala src/Widgets/*.vala)
-SRC=src/lipsum.vala\
-	src/generator.vala\
+SRC=src/Lipsum.vala\
+	src/Generator.vala\
 	src/Application.vala\
 	src/Widgets/Window.vala
 
@@ -42,8 +42,8 @@ uninstall:
 
 
 clean:
-	rm $(PRG)
-	rm $(DOCKLET)
+	rm -f $(PRG)
+	rm -f $(DOCKLET_PRG)
 
 
 distclean:

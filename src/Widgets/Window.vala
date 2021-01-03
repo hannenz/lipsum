@@ -27,21 +27,41 @@ namespace Lipsum {
 
 		protected Button generate_button;
 
-		protected Generator generator;
+		protected InfoBar infobar;
+
+		protected Label infobar_message_label;
+
+		protected Button infobar_button;
 
 		protected HeaderBar header;
+
+
+		public  Generator generator { get; set construct; }
+
 
 		private uint configure_id;
 
 
-		public Window(Application app) {
+		public Window(Application application, Generator generator) {
 
 			Object (
-				application: app
+				application: application,
+				generator: generator
 			);
+		}
 
-			this.generator = app.generator;
+		construct {
 
+			var gtk_settings = Gtk.Settings.get_default();
+			gtk_settings.gtk_application_prefer_dark_theme = Application.settings.get_boolean("dark-style");
+
+			var provider = new Gtk.CssProvider();
+			provider.load_from_resource("/de/hannenz/lipsum/data/styles/global.css");
+			Gtk.StyleContext.add_provider_for_screen(
+				Gdk.Screen.get_default(),
+				provider,
+				Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION
+			);
 
 			// Restore window size and position
 			int window_x, window_y, width, height;
@@ -58,7 +78,6 @@ namespace Lipsum {
 				move(window_x, window_y);
 			}
 
-
 			this.clipboard = Gtk.Clipboard.get_for_display(Gdk.Display.get_default(), Gdk.SELECTION_CLIPBOARD);
 
 			Application.settings.get("count", "i", out this.generator.count);
@@ -66,11 +85,7 @@ namespace Lipsum {
 			this.build_gui();
 			this.show_all();
 
-			this.on_generate_button_clicked(this.generate_button);
-		}
-
-
-		construct {
+			update();
 		}
 
 
@@ -80,6 +95,7 @@ namespace Lipsum {
 
 				var builder = new Builder();
 				builder.add_from_resource("/de/hannenz/lipsum/data/ui/window.ui");
+				builder.add_from_resource("/de/hannenz/lipsum/data/ui/popover.ui");
 
 				var vbox = builder.get_object("main_vbox") as Gtk.Box;
 				vbox.get_parent().remove(vbox);
@@ -87,14 +103,10 @@ namespace Lipsum {
 
 				this.border_width = 10;
 				this.text_view = builder.get_object("textview") as TextView;
-				this.text_view.set_wrap_mode(Gtk.WrapMode.WORD);
 				this.text_view.buffer.text = this.generator.generate();
 
 				this.spin_button = builder.get_object("amount_spinbutton") as SpinButton;
 				this.spin_button.set_value(this.generator.count);
-				this.spin_button.changed.connect( () => {
-					Application.settings.set("count", "i", (uint)this.spin_button.get_value());
-				});
 
 				this.count_chars_rb = builder.get_object("chars_radiobutton") as RadioButton;
 				this.count_words_rb = builder.get_object("words_radiobutton") as RadioButton;
@@ -105,6 +117,15 @@ namespace Lipsum {
 				this.count_words_rb.set_active(this.generator.count_words);
 				this.count_sentences_rb.set_active(this.generator.count_sentences);
 				this.count_paragraphs_rb.set_active(this.generator.count_paragraphs);
+
+				this.infobar = builder.get_object("infobar") as InfoBar;
+				this.infobar.set_no_show_all(true);
+				this.infobar_message_label = builder.get_object("infobar_message_label") as Label;
+				this.infobar_button = builder.get_object("infobar_button") as Button;
+				this.infobar_button.clicked.connect( () => {
+					this.infobar.hide();
+					this.infobar.set_revealed(true);
+				});
 
 				string selected;
 				Application.settings.get("selected", "s", out selected);
@@ -140,13 +161,21 @@ namespace Lipsum {
 				var menu_popover = new Gtk.Popover(menu_button);
 				menu_button.popover = menu_popover;
 
-				builder.add_from_resource("/de/hannenz/lipsum/data/ui/popover.ui");
-				builder.connect_signals(this);
 				var grid = builder.get_object("popover_grid") as Gtk.Grid;
 				menu_popover.add(grid);
 
 				this.lorem_switch = builder.get_object("lorem_switch") as Gtk.Switch;
+				this.lorem_switch.notify["active"].connect( (sw) => {
+					Application.settings.set("lorem", "b", this.lorem_switch.get_state());
+					update();
+				});
+
 				this.html_switch = builder.get_object("html_switch") as Gtk.Switch;
+				this.html_switch.notify["active"].connect( () => {
+					Application.settings.set("html", "b", this.html_switch.get_state());
+					update();
+				});
+
 				Application.settings.get("lorem", "b", out this.generator.start_with_lorem_ipsum);
 				Application.settings.get("html", "b", out this.generator.html);
 				lorem_switch.set_active(this.generator.start_with_lorem_ipsum);
@@ -163,20 +192,8 @@ namespace Lipsum {
 
 
 
-		/**
-		 * Callbacks
-		 *
-		 * To allow auto connecting signals via Glade (XML UI Builder)
-		 * we have to add the [CCode (instance_pos=-1)] annotations
-		 * to the callback functions.
-		 * In Glade the method name is namespace_class_method_name
-		 * See here for details:
-		 * https://wiki.gnome.org/Projects/Vala/GTKSample#Loading_User_Interface_from_XML_File
-		 */
-
-		[CCode (instance_pos = -1)]
-		public void on_generate_button_clicked(Button source) {
-
+		public void update() {
+			
 			this.generator.count = this.spin_button.get_value_as_int();
 			this.generator.count_paragraphs = this.count_paragraphs_rb.get_active();
 			this.generator.count_sentences = this.count_sentences_rb.get_active();
@@ -203,38 +220,61 @@ namespace Lipsum {
 		}
 
 
+		/**
+		 * Callbacks
+		 *
+		 * To allow auto connecting signals via Glade (XML UI Builder)
+		 * we have to add the [CCode (instance_pos=-1)] annotations
+		 * to the callback functions.
+		 * In Glade the method name is namespace_class_method_name
+		 * See here for details:
+		 * https://wiki.gnome.org/Projects/Vala/GTKSample#Loading_User_Interface_from_XML_File
+		 */
+
+		[CCode (instance_pos = -1)]
+		public void on_generate_button_clicked(Button source) {
+			update();
+		}
+
+
 		[CCode (instance_pos = -1)]
 		protected void on_copy_button_clicked(Button source) {
 			this.clipboard.set_text(text_view.buffer.text, -1);
+			this.infobar_message_label.set_text("Placeholder text has been copied to clipboard");
+			this.infobar.set_revealed(true);
+			this.infobar.set_message_type(MessageType.INFO);
+			this.infobar.show();
 		}
+
 
 		[CCode (instance_pos = -1)]
-		protected void on_copy_close_button_clicked(Button source) {
-
-			clipboard.set_text(text_view.buffer.text, -1);
-			this.application.quit();
+		protected void on_spin_button_value_changed(SpinButton btn) {
+			Application.settings.set("count", "i", btn.get_value_as_int());
+			update();
 		}
+
 
 		[CCode (instance_pos = -1)]
 		protected void on_lorem_switch_activated(Switch the_switch) {
-			// this.generator.start_with_lorem_ipsum = the_switch.get_state();
 			Application.settings.set("lorem", "b", the_switch.get_state());
-			this.on_generate_button_clicked(this.generate_button);
-			// update();
+			update();
 		}
+
 
 		[CCode (instance_pos = -1)]
 		protected void on_html_switch_activated(Switch the_switch) {
-			this.generator.html = the_switch.get_state();
-			Application.settings.set("html", "b", this.generator.html);
+			Application.settings.set("html", "b", the_switch.get_state());
+			update();
 		}
 
+
+		// Periodically store window size and position
 		public override bool configure_event(Gdk.EventConfigure event) {
 			if (configure_id != 0) {
 				GLib.Source.remove(configure_id);
 			}
 
-			configure_id = Timeout.add(100, () => {
+			configure_id = Timeout.add(250, () => {
 				configure_id = 0;
 
 				int root_x, root_y, width, height;

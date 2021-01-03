@@ -26,7 +26,7 @@
 			<object class="GtkSwitch" id="lorem_switch">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-				<signal name="notify::active" handler="lipsum_window_on_lorem_switch_activated" swapped="no" />
+				<!-- <signal name="notify::active" handler="lipsum_window_on_lorem_switch_activated" swapped="no" /> -->
 			</object>
 			<packing>
 				<property name="left_attach">1</property>
@@ -48,7 +48,7 @@
 			<object class="GtkSwitch" id="html_switch">
                 <property name="visible">True</property>
                 <property name="can_focus">True</property>
-				<signal name="notify::active" handler="lipsum_window_on_html_switch_activated" swapped="no" />
+				<!-- <signal name="notify::active" handler="lipsum_window_on_html_switch_activated" swapped="no" /> -->
 			</object>
 			<packing>
 				<property name="left_attach">1</property>

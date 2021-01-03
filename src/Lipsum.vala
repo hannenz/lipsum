@@ -15,7 +15,7 @@ namespace Lipsum {
 		/**
 		 * @var string version
 		 */
-		private const string version = "0.1";
+		private const string version = "0.2";
 
 		/**
 		 * @var bool GUI
