@@ -11,7 +11,7 @@ namespace Lipsum {
 		/**
 		 * @var Lipsum.Window
 		 */
-		protected Window window;
+		protected Window window = null;
 
 
 		/**
@@ -64,7 +64,9 @@ namespace Lipsum {
 
 		protected override void activate() {
 
-			this.window = new Window(this, generator);
+			if (this.window == null) {
+				this.window = new Window(this, generator);
+			}
 			window.present();
 		}
 	}

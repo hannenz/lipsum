@@ -13,7 +13,7 @@ SRC=src/Lipsum.vala\
 	src/Application.vala\
 	src/Widgets/Window.vala
 
-DOCKLET_SOURCES=$(wildcard src/docklet/*.vala) src/generator.vala
+DOCKLET_SOURCES=$(wildcard src/docklet/*.vala) src/Generator.vala
 
 
 $(PRG): $(SRC) resources.c

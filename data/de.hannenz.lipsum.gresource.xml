@@ -5,6 +5,5 @@
 		<file>data/ui/window.ui</file>
 		<file>data/ui/popover.ui</file>
 		<file>data/ui/menu.ui</file>
-		<file>data/ui/dialog.ui</file>
 	</gresource>
 </gresources>
