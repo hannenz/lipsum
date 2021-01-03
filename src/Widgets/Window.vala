@@ -240,7 +240,7 @@ namespace Lipsum {
 		[CCode (instance_pos = -1)]
 		protected void on_copy_button_clicked(Button source) {
 			this.clipboard.set_text(text_view.buffer.text, -1);
-			this.infobar_message_label.set_text("Placeholder text has been copied to clipboard");
+			this.infobar_message_label.set_text("Placeholder text has been copied to clipboard (%u characters)".printf(text_view.buffer.text.length));
 			this.infobar.set_revealed(true);
 			this.infobar.set_message_type(MessageType.INFO);
 			this.infobar.show();
