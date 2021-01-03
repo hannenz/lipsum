@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Lipsum
+GenericName=Dummy text generator
+Comment=Generate dummy text ("Lorem ipsum …")
+Categories=Utility;Development
+Exec=lipsum --gui
+Icon=text-x-generic
+Terminal=false
+Type=Application
+Keywords=Lorem;ipsum;Placeholder;text;

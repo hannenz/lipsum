@@ -7,8 +7,6 @@ namespace Lipsum {
 
 	public class LipsumDockItem : DockletItem {
 
-		protected Gdk.Pixbuf icon_pixbuf;
-
 		protected LipsumPreferences prefs;
 
 		protected Lipsum.Generator generator;
@@ -33,7 +31,7 @@ namespace Lipsum {
 			Logger.DisplayLevel = LogLevel.NOTIFY;
 
 			// Set Icon and Text (Tooltip);
-			Icon = "resource://" + Lipsum.G_RESOURCE_PATH + "/src/docklet/icons/lipsum_icon.svg";
+			Icon = "resource://" + Lipsum.G_RESOURCE_PATH + "/data/icons/lipsum.svg";
 			Text = "Generate placeholder text on the fly";
 			Button = PopupButton.RIGHT;
 
@@ -43,14 +41,6 @@ namespace Lipsum {
 
 			// Get preferences (Where do we set them?? They are not in gsettings!!
 			// prefs = (LipsumPreferences) Prefs;
-
-
-			try {
-				icon_pixbuf = new Gdk.Pixbuf.from_resource(Lipsum.G_RESOURCE_PATH + "/src/docklet/icons/lipsum_icon.svg");
-			}
-			catch (Error e) {
-				warning("Error: " + e.message);
-			}
 		}
 
 
@@ -80,7 +70,7 @@ namespace Lipsum {
 		// 						 Cairo.FontWeight.BOLD);
 		// 	ctx.set_font_size(12);
 		// 	ctx.move_to(10, 30);
-		// 	
+		//
 		// 	ctx.show_text("count: %u".printf(this.generator.count));
 		// }
 

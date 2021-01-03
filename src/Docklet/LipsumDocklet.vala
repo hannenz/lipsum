@@ -29,11 +29,12 @@ namespace Lipsum {
 		}
 
 		public unowned string get_description() {
-			return "Generate placeholder text (lorem ipsum)";
+			return "Generate dummy text (\"Lorem ipsum …\")";
 		}
 
 		public unowned string get_icon() {
-			return "resource://" + Lipsum.G_RESOURCE_PATH + "/src/docklet/icons/lipsum_icon.svg";
+			return "text-x-generic";
+			// return "resource://" + Lipsum.G_RESOURCE_PATH + "/src/docklet/icons/lipsum.svg";
 		}
 
 		public bool is_supported() {
