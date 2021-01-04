@@ -2,3 +2,4 @@
 libdocklet-lipsum.so
 *.mo
 de.hannenz.lipsum
+po/lipsum.pot
