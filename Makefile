@@ -47,7 +47,7 @@ po/de/lipsum.po: po/lipsum.pot
 
 po/lipsum.pot: data/ui/menu.ui data/ui/window.ui data/ui/popover.ui
 	if [ -e po/lipsum.pot ]; then xgettext --join-existing --language=Glade --sort-output --output=po/lipsum.pot data/ui/* ; fi
-	if [ ! -e po/lipsum.pot ]; then xgettext --language=Glade --sort-output --output=po/lipsum.pot data/ui/* ; fi
+	if [ ! -e po/lipsum.pot ]; then xgettext --language=Glade --sort-output --output=po/lipsum.pot data/ui/* ; sed -i -E 's/CHARSET/UTF-8/' po/lipsum.pot ; fi
 
 
 all: $(PRG) $(DOCKLET) po/de/lipsum.mo
