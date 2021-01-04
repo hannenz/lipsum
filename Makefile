@@ -67,8 +67,10 @@ install:
 
 uninstall:
 	rm -f /usr/local/bin/$(PRG)
+	rm -f /usr/local/bin/lipsum
 	rm -f /usr/lib/x86_64-linux-gnu/plank/docklets/libdocklet-lipsum.so
-	rm -f  /usr/share/glib-2.0/schemas/data/de.hannenz.lipsum.gschema.xml && glib-compile-schemas /usr/share/glib-2.0/schemas/
+	rm -f /usr/share/glib-2.0/schemas/data/de.hannenz.lipsum.gschema.xml && glib-compile-schemas /usr/share/glib-2.0/schemas/
+	rm -f /usr/share/locale/de/LC_MESSAGES/lipsum.mo
 
 
 clean:
