@@ -12,11 +12,11 @@ msgstr "Erzeuge"
 
 #: data/ui/window.ui:191 data/ui/window.ui~:191
 msgid "Paragraphs"
-msgstr "Abstze"
+msgstr "Absätze"
 
 #: data/ui/window.ui:173 data/ui/window.ui~:173
 msgid "Sentences"
-msgstr "Stze"
+msgstr "Sätze"
 
 #: data/ui/popover.ui:18
 msgid "Start with \"Lorem Ipsum\""
@@ -24,11 +24,11 @@ msgstr "Beginne mit \"Lorem Ipsum\""
 
 #: data/ui/window.ui:155 data/ui/window.ui~:155
 msgid "Words"
-msgstr "Wrter"
+msgstr "Wörter"
 
 #: data/ui/popover.ui:40
 msgid "Wrap in HTML <p> Tags"
-msgstr "In HTML <p> Tags"
+msgstr "In HTML <p> Tags einbetten"
 
 #: data/ui/menu.ui:7
 msgid "_Preferences"
