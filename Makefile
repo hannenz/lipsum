@@ -48,6 +48,7 @@ po/de/lipsum.po: po/lipsum.pot
 po/lipsum.pot: data/ui/menu.ui data/ui/window.ui data/ui/popover.ui
 	xgettext --join-existing --language=Glade --sort-output --output=po/lipsum.pot data/ui/*
 
+
 all: $(PRG) $(DOCKLET) po/de/lipsum.mo
 
 
@@ -56,10 +57,11 @@ docklet: $(DOCKLET)
 
 install:
 	install -m 755 $(PRG) /usr/local/bin/
+	ln -sf /usr/local/bin/$(PRG) /usr/local/bin/lipsum
 	install -m 644 libdocklet-lipsum.so /usr/lib/x86_64-linux-gnu/plank/docklets/
 	install -m 644 data/lipsum.desktop /usr/share/applications/
 	install -m 644 data/de.hannenz.lipsum.gschema.xml /usr/share/glib-2.0/schemas/
-	install -m 644 po/de/LC_MESSAGES/lipsum.mo /usr/share/locale/de/LC_MESSAGES/
+	install -m 644 po/de/lipsum.mo /usr/share/locale/de/LC_MESSAGES/
 	glib-compile-schemas /usr/share/glib-2.0/schemas/
 
 
@@ -72,9 +74,9 @@ uninstall:
 clean:
 	rm -f $(PRG)
 	rm -f $(DOCKLET)
+	rm -f $(PRG).vapi
+	rm -f $(DOCKLET).vapi
 	rm -f resources.c
-	rm -f ($PRG).vapi
-	rm -f ($DOCKLET).vapi
 
 
 distclean:

@@ -19,7 +19,7 @@ namespace Lipsum {
 		/**
 		 * @var string version
 		 */
-		private const string version = "0.2";
+		private const string version = "0.3";
 
 		/**
 		 * @var bool GUI
@@ -66,7 +66,7 @@ namespace Lipsum {
 
 
 			Intl.setlocale(LocaleCategory.ALL, "");
-			Intl.bindtextdomain(GETTEXT_PACKAGE, "./po/");
+			Intl.bindtextdomain(GETTEXT_PACKAGE, "/usr/share/locale/");
 			Intl.textdomain(GETTEXT_PACKAGE);
 
 
@@ -74,12 +74,12 @@ namespace Lipsum {
 			try {
 				var opt_context = new OptionContext("[count]");
 				opt_context.set_help_enabled(true);
-				opt_context.add_main_entries(options, null);
+				opt_context.add_main_entries(options, GETTEXT_PACKAGE);
 				opt_context.parse(ref args);
 			}
 			catch (Error e){
-				stderr.printf("Error: %s\n", e.message);
-				stderr.printf("Run %s --help to see a full list of availalbe command line options.\n", args[0]);
+				stderr.printf(_("Error: %s\n"), e.message);
+				stderr.printf(_("Run %s --help to see a full list of availalbe command line options.\n"), args[0]);
 				return 1;
 			}
 
@@ -98,7 +98,7 @@ namespace Lipsum {
 			}
 
 			if ((int)count_paragraphs + (int)count_sentences + (int)count_words + (int)count_chars > 1){
-				stderr.printf("Only one of -p, -s, -w or -c flag is allowed\n");
+				stderr.printf(_("Only one of -p, -s, -w or -c flag is allowed\n"));
 				return 1;
 			}
 
@@ -135,4 +135,3 @@ namespace Lipsum {
 		}
 	}
 }
-

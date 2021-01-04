@@ -1,0 +1,46 @@
+#: data/ui/window.ui:115 data/ui/window.ui~:115
+msgid "1"
+msgstr ""
+
+#: data/ui/window.ui:137 data/ui/window.ui~:137
+msgid "Characters"
+msgstr "Zeichen"
+
+#: data/ui/window.ui:102 data/ui/window.ui~:102
+msgid "Generate"
+msgstr "Erzeuge"
+
+#: data/ui/window.ui:191 data/ui/window.ui~:191
+msgid "Paragraphs"
+msgstr "Abstze"
+
+#: data/ui/window.ui:173 data/ui/window.ui~:173
+msgid "Sentences"
+msgstr "Stze"
+
+#: data/ui/popover.ui:18
+msgid "Start with \"Lorem Ipsum\""
+msgstr "Beginne mit \"Lorem Ipsum\""
+
+#: data/ui/window.ui:155 data/ui/window.ui~:155
+msgid "Words"
+msgstr "Wrter"
+
+#: data/ui/popover.ui:40
+msgid "Wrap in HTML <p> Tags"
+msgstr "In HTML <p> Tags"
+
+#: data/ui/menu.ui:7
+msgid "_Preferences"
+msgstr "_Eigenschaften"
+
+#: data/ui/menu.ui:13
+msgid "_Quit"
+msgstr "_Beenden"
+
+#: data/ui/window.ui:60 data/ui/window.ui~:60
+msgid "label"
+msgstr "label"
+
+#~ msgid "OK"
+#~ msgstr "OK"
