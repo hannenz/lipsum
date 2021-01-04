@@ -46,7 +46,8 @@ po/de/lipsum.po: po/lipsum.pot
 	msgmerge --update $@ $<
 
 po/lipsum.pot: data/ui/menu.ui data/ui/window.ui data/ui/popover.ui
-	xgettext --join-existing --language=Glade --sort-output --output=po/lipsum.pot data/ui/*
+	if [ -e po/lipsum.pot ]; then xgettext --join-existing --language=Glade --sort-output --output=po/lipsum.pot data/ui/* ; fi
+	if [ ! -e po/lipsum.pot ]; then xgettext --language=Glade --sort-output --output=po/lipsum.pot data/ui/* ; fi
 
 
 all: $(PRG) $(DOCKLET) po/de/lipsum.mo
