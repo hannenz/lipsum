@@ -8,6 +8,10 @@
  */
 using Gtk;
 
+[CCode(cname="GETTEXT_PACKAGE")]
+extern const string GETTEXT_PACKAGE;
+
+
 namespace Lipsum {
 
 	public class Lipsum {
@@ -59,6 +63,12 @@ namespace Lipsum {
 		 * main function
 		 */
 		public static int main(string[] args){
+
+
+			Intl.setlocale(LocaleCategory.ALL, "");
+			Intl.bindtextdomain(GETTEXT_PACKAGE, "./po/");
+			Intl.textdomain(GETTEXT_PACKAGE);
+
 
 			// Parse options
 			try {

@@ -28,7 +28,7 @@ DOCKLET_SRC=\
 
 
 $(PRG): $(SRC) resources.c
-	$(VALAC) -o $@ --pkg gio-2.0 --pkg gtk+-3.0 --pkg gmodule-2.0 $(SRC) resources.c
+	$(VALAC) -X -DGETTEXT_PACKAGE="\"lipsum\"" -o $@ --pkg gio-2.0 --pkg gtk+-3.0 --pkg gmodule-2.0 $(SRC) resources.c
 
 
 $(DOCKLET): $(DOCKLET_SRC) resources.c
@@ -39,17 +39,28 @@ resources.c: $(RESOURCES)
 	 glib-compile-resources data/de.hannenz.lipsum.gresource.xml --target=resources.c --generate-source
 
 
-all: $(PRG) $(DOCKLET)
+po/de/lipsum.mo: po/de/lipsum.po
+	msgfmt --output-file=$@ $<
+
+po/de/lipsum.po: po/lipsum.pot
+	msgmerge --update $@ $<
+
+po/lipsum.pot: data/ui/menu.ui data/ui/window.ui data/ui/popover.ui
+	xgettext --join-existing --language=Glade --sort-output --output=po/lipsum.pot data/ui/*
+
+all: $(PRG) $(DOCKLET) po/de/lipsum.mo
+
 
 docklet: $(DOCKLET)
+
 
 install:
 	install -m 755 $(PRG) /usr/local/bin/
 	install -m 644 libdocklet-lipsum.so /usr/lib/x86_64-linux-gnu/plank/docklets/
 	install -m 644 data/lipsum.desktop /usr/share/applications/
 	install -m 644 data/de.hannenz.lipsum.gschema.xml /usr/share/glib-2.0/schemas/
+	install -m 644 po/de/LC_MESSAGES/lipsum.mo /usr/share/locale/de/LC_MESSAGES/
 	glib-compile-schemas /usr/share/glib-2.0/schemas/
-
 
 
 uninstall:

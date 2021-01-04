@@ -2,7 +2,7 @@
 Name=Lipsum
 GenericName=Dummy text generator
 Comment=Generate dummy text ("Lorem ipsum …")
-Categories=Utility;Development
+Categories=Utility;Development;Office
 Exec=lipsum --gui
 Icon=text-x-generic
 Terminal=false

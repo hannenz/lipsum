@@ -1,2 +1,4 @@
 /lipsum
 libdocklet-lipsum.so
+*.mo
+de.hannenz.lipsum

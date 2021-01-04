@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2020 Johannes Braun <johannes.braun@hannenz.de> -->
+<component type="desktop">
+	<id>de.hannenz.lipsum</id>
+	<metadata_license>CC0</metadata_license>
+	<name>Lipsum</name>
+	<summary>Dummy text generator</summary>
+	<description>
+		Generate dummy text ("Lorem ipsum …"). Includes CLI, GUI and Plank docklet.
+	</description>
+</component>

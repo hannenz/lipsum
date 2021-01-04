@@ -7,4 +7,4 @@ export G_MESSAGES_DEBUG=all
 export GSETTINGS_SCHEMA_DIR=./data/
 
 # run the executable
-./lipsum -g $@
+./de.hannenz.lipsum -g $@
