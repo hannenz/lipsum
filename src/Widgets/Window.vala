@@ -35,9 +35,7 @@ namespace Lipsum {
 
 		protected HeaderBar header;
 
-
 		public  Generator generator { get; set construct; }
-
 
 		private uint configure_id;
 
@@ -239,8 +237,9 @@ namespace Lipsum {
 
 		[CCode (instance_pos = -1)]
 		protected void on_copy_button_clicked(Button source) {
-			this.clipboard.set_text(text_view.buffer.text, -1);
-			this.infobar_message_label.set_text("Placeholder text has been copied to clipboard (%u characters)".printf(text_view.buffer.text.length));
+			string text = text_view.buffer.text;
+			this.clipboard.set_text(text, -1);
+			this.infobar_message_label.set_text("Placeholder text has been copied to clipboard (%u characters, %u words)".printf(text.length, count_words(text)));
 			this.infobar.set_revealed(true);
 			this.infobar.set_message_type(MessageType.INFO);
 			this.infobar.show();
@@ -288,6 +287,11 @@ namespace Lipsum {
 			});
 
 			return base.configure_event(event);
+		}
+
+		private int count_words(string str) {
+			var words = str.split(" ");
+			return words.length;
 		}
 	}
 }
