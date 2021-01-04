@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-04 21:49+0100\n"
+"POT-Creation-Date: 2021-01-04 22:10+0100\n"
 "PO-Revision-Date: 2021-01-04 21:55+0100\n"
 "Last-Translator: Johannes Braun <johannes.braun@hannenz.de>\n"
 "Language-Team: German\n"
@@ -26,13 +26,31 @@ msgstr ""
 msgid "Characters"
 msgstr "Zeichen"
 
+#: src/Lipsum.vala:81
+#, c-format
+msgid "Error: %s\n"
+msgstr ""
+
 #: data/ui/window.ui:102 data/ui/window.ui~:102
 msgid "Generate"
 msgstr "Erzeugen"
 
+#: src/Docklet/LipsumDockItem.vala:38
+msgid "Generate dummy text on the fly"
+msgstr "Erzeuge Blindetext im Handumdrehen"
+
+#: src/Lipsum.vala:101
+msgid "Only one of -p, -s, -w or -c flag is allowed\n"
+msgstr "Von den Flags -p, -s, -w oder -c flags ist nur eines erlaubt\n"
+
 #: data/ui/window.ui:191 data/ui/window.ui~:191
 msgid "Paragraphs"
 msgstr "Absätze"
+
+#: src/Lipsum.vala:82
+#, c-format
+msgid "Run %s --help to see a full list of availalbe command line options.\n"
+msgstr "Führe %s --help aus, um eine Liste aller verfügbaren Kommandozeilen-Optionen zu sehen\n"
 
 #: data/ui/window.ui:173 data/ui/window.ui~:173
 msgid "Sentences"

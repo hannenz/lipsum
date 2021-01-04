@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-01-04 22:00+0100\n"
+"POT-Creation-Date: 2021-01-04 22:10+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -25,12 +25,30 @@ msgstr ""
 msgid "Characters"
 msgstr ""
 
+#: src/Lipsum.vala:81
+#, c-format
+msgid "Error: %s\n"
+msgstr ""
+
 #: data/ui/window.ui:102 data/ui/window.ui~:102
 msgid "Generate"
 msgstr ""
 
+#: src/Docklet/LipsumDockItem.vala:38
+msgid "Generate dummy text on the fly"
+msgstr ""
+
+#: src/Lipsum.vala:101
+msgid "Only one of -p, -s, -w or -c flag is allowed\n"
+msgstr ""
+
 #: data/ui/window.ui:191 data/ui/window.ui~:191
 msgid "Paragraphs"
+msgstr ""
+
+#: src/Lipsum.vala:82
+#, c-format
+msgid "Run %s --help to see a full list of availalbe command line options.\n"
 msgstr ""
 
 #: data/ui/window.ui:173 data/ui/window.ui~:173

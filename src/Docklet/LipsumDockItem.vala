@@ -2,6 +2,9 @@ using Plank;
 using Cairo;
 using Gdk;
 
+[CCode(cname="GETTEXT_PACKAGE")]
+extern const string GETTEXT_PACKAGE;
+
 namespace Lipsum {
 
 
@@ -32,7 +35,7 @@ namespace Lipsum {
 
 			// Set Icon and Text (Tooltip);
 			Icon = "text-x-generic";
-			Text = "Generate dummy text on the fly";
+			Text = _("Generate dummy text on the fly");
 			Button = PopupButton.RIGHT;
 
 			this.generator = new Generator();

@@ -32,7 +32,7 @@ $(PRG): $(SRC) resources.c
 
 
 $(DOCKLET): $(DOCKLET_SRC) resources.c
-	$(VALAC) -o $(DOCKLET) $(DOCKLET_SRC) resources.c $(VALAFLAGS)
+	$(VALAC) -X -DGETTEXT_PACKAGE="\"lipsum\"" -o $(DOCKLET) $(DOCKLET_SRC) resources.c $(VALAFLAGS)
 
 
 resources.c: $(RESOURCES)
@@ -45,9 +45,9 @@ po/de/lipsum.mo: po/de/lipsum.po
 po/de/lipsum.po: po/lipsum.pot
 	msgmerge --update $@ $<
 
-po/lipsum.pot: data/ui/menu.ui data/ui/window.ui data/ui/popover.ui
-	if [ -e po/lipsum.pot ]; then xgettext --join-existing --language=Glade --sort-output --output=po/lipsum.pot data/ui/* ; fi
-	if [ ! -e po/lipsum.pot ]; then xgettext --language=Glade --sort-output --output=po/lipsum.pot data/ui/* ; sed -i -E 's/CHARSET/UTF-8/' po/lipsum.pot ; fi
+po/lipsum.pot: data/ui/menu.ui data/ui/window.ui data/ui/popover.ui $(SRC) $(DOCKLET_SRC)
+	xgettext --join-existing --language=Glade --sort-output --output=po/lipsum.pot data/ui/*
+	xgettext --join-existing --language=vala  --sort-output --output=po/lipsum.pot data/ui/* $(SRC) $(DOCKLET_SRC)
 
 
 all: $(PRG) $(DOCKLET) po/de/lipsum.mo
