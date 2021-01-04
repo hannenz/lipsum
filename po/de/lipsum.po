@@ -1,3 +1,23 @@
+# German translations for PACKAGE package
+# German translation for PACKAGE.
+# Copyright (C) 2021 THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# Johannes Braun <johannes.braun@hannenz.de>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-01-04 21:49+0100\n"
+"PO-Revision-Date: 2021-01-04 21:55+0100\n"
+"Last-Translator: Johannes Braun <johannes.braun@hannenz.de>\n"
+"Language-Team: German\n"
+"Language: de\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: data/ui/window.ui:115 data/ui/window.ui~:115
 msgid "1"
 msgstr ""
@@ -8,7 +28,7 @@ msgstr "Zeichen"
 
 #: data/ui/window.ui:102 data/ui/window.ui~:102
 msgid "Generate"
-msgstr "Erzeuge"
+msgstr "Erzeugen"
 
 #: data/ui/window.ui:191 data/ui/window.ui~:191
 msgid "Paragraphs"
@@ -32,7 +52,7 @@ msgstr "In HTML <p> Tags einbetten"
 
 #: data/ui/menu.ui:7
 msgid "_Preferences"
-msgstr "_Eigenschaften"
+msgstr "_Einstellungen"
 
 #: data/ui/menu.ui:13
 msgid "_Quit"
@@ -41,6 +61,3 @@ msgstr "_Beenden"
 #: data/ui/window.ui:60 data/ui/window.ui~:60
 msgid "label"
 msgstr "label"
-
-#~ msgid "OK"
-#~ msgstr "OK"
