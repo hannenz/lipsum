@@ -31,8 +31,8 @@ namespace Lipsum {
 			Logger.DisplayLevel = LogLevel.NOTIFY;
 
 			// Set Icon and Text (Tooltip);
-			Icon = "resource://" + Lipsum.G_RESOURCE_PATH + "/data/icons/lipsum.svg";
-			Text = "Generate placeholder text on the fly";
+			Icon = "text-x-generic";
+			Text = "Generate dummy text on the fly";
 			Button = PopupButton.RIGHT;
 
 			this.generator = new Generator();
