@@ -1,8 +1,12 @@
 VALAC = valac
 PRG = de.hannenz.lipsum
-DOCKLET=libdocklet-lipsum.so
+DOCKLET = libdocklet-lipsum.so
 PACKAGES = gtk+-3.0 plank
 VALAFLAGS = $(patsubst %, --pkg %, $(PACKAGES))  -X -fPIC -X -shared --library=$(DOCKLET)
+
+DESTDIR ?= /
+PREFIX ?= /usr/local
+
 RESOURCES=\
 	data/styles/global.css\
 	data/de.hannenz.lipsum.gresource.xml\
@@ -57,29 +61,34 @@ docklet: $(DOCKLET)
 
 
 install:
-	install -m 755 $(PRG) /usr/local/bin/
-	ln -sf /usr/local/bin/$(PRG) /usr/local/bin/lipsum
-	install -m 644 libdocklet-lipsum.so /usr/lib/x86_64-linux-gnu/plank/docklets/
-	install -m 644 data/lipsum.desktop /usr/share/applications/
-	install -m 644 data/de.hannenz.lipsum.gschema.xml /usr/share/glib-2.0/schemas/
-	install -m 644 po/de/lipsum.mo /usr/share/locale/de/LC_MESSAGES/
-	glib-compile-schemas /usr/share/glib-2.0/schemas/
+	install -Dm 755 "$(PRG)" "$(DESTDIR)/$(PREFIX)/bin/$(PRG)"
+	install -Dm 644 "$(DOCKLET)" "$(DESTDIR)/$(PREFIX)/lib/x86_64-linux-gnu/plank/docklets/$(DOCKLET)"
+	install -Dm 644 "data/lipsum.desktop" "$(DESTDIR)/$(PREFIX)/share/applications/lipsum.desktop"
+	install -Dm 644 "po/de/lipsum.mo" "$(DESTDIR)/$(PREFIX)/share/locale/de/LC_MESSAGES/lipsum.mo"
+	install -Dm 644 "data/$(PRG).gschema.xml" "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/$(PRG).gschema.xml"
 
+	ln -sfr "$(DESTDIR)/$(PREFIX)/bin/$(PRG)" "$(DESTDIR)/$(PREFIX)/bin/lipsum"
+
+	glib-compile-schemas "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/"
 
 uninstall:
-	rm -f /usr/local/bin/$(PRG)
-	rm -f /usr/local/bin/lipsum
-	rm -f /usr/lib/x86_64-linux-gnu/plank/docklets/libdocklet-lipsum.so
-	rm -f /usr/share/glib-2.0/schemas/data/de.hannenz.lipsum.gschema.xml && glib-compile-schemas /usr/share/glib-2.0/schemas/
-	rm -f /usr/share/locale/de/LC_MESSAGES/lipsum.mo
+	rm -f "$(DESTDIR)/$(PREFIX)/bin/$(PRG)"
+	rm -f "$(DESTDIR)/$(PREFIX)/lib/x86_64-linux-gnu/plank/docklets/$(DOCKLET)"
+	rm -f "$(DESTDIR)/$(PREFIX)/share/applications/lipsum.desktop"
+	rm -f "$(DESTDIR)/$(PREFIX)/share/locale/de/LC_MESSAGES/lipsum.mo"
+	rm -f "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/$(PRG).gschema.xml"
+
+	rm -f "$(DESTDIR)/$(PREFIX)/bin/lipsum"
+
+	glib-compile-schemas "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/"
 
 
 clean:
-	rm -f $(PRG)
-	rm -f $(DOCKLET)
-	rm -f $(PRG).vapi
-	rm -f $(DOCKLET).vapi
-	rm -f resources.c
+	rm -f "$(PRG)"
+	rm -f "$(DOCKLET)"
+	rm -f "$(PRG).vapi"
+	rm -f "$(DOCKLET).vapi"
+	rm -f "resources.c"
 
 
 distclean:
