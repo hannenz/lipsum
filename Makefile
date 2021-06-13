@@ -28,7 +28,7 @@ DOCKLET_SRC=\
 	src/Generator.vala
 
 
-.PHONY: clean distclean
+.PHONY: clean distclean schemas
 
 
 $(PRG): $(SRC) resources.c
@@ -69,7 +69,8 @@ install:
 
 	ln -sfr "$(DESTDIR)/$(PREFIX)/bin/$(PRG)" "$(DESTDIR)/$(PREFIX)/bin/lipsum"
 
-	glib-compile-schemas "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/"
+	$(MAKE) schemas
+
 
 uninstall:
 	rm -f "$(DESTDIR)/$(PREFIX)/bin/$(PRG)"
@@ -80,7 +81,12 @@ uninstall:
 
 	rm -f "$(DESTDIR)/$(PREFIX)/bin/lipsum"
 
-	glib-compile-schemas "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/"
+	$(MAKE) schemas
+
+
+schemas:
+	-test -f "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/gschemas.compiled" && \
+    	glib-compile-schemas "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/"
 
 
 clean:
