@@ -62,7 +62,7 @@ docklet: $(DOCKLET)
 
 install:
 	install -Dm 755 "$(PRG)" "$(DESTDIR)/$(PREFIX)/bin/$(PRG)"
-	install -Dm 644 "$(DOCKLET)" "$(DESTDIR)/$(PREFIX)/lib/x86_64-linux-gnu/plank/docklets/$(DOCKLET)"
+	install -Dm 644 "$(DOCKLET)" "/usr/lib/x86_64-linux-gnu/plank/docklets/$(DOCKLET)"
 	install -Dm 644 "data/lipsum.desktop" "$(DESTDIR)/$(PREFIX)/share/applications/lipsum.desktop"
 	install -Dm 644 "po/de/lipsum.mo" "$(DESTDIR)/$(PREFIX)/share/locale/de/LC_MESSAGES/lipsum.mo"
 	install -Dm 644 "data/$(PRG).gschema.xml" "$(DESTDIR)/$(PREFIX)/share/glib-2.0/schemas/$(PRG).gschema.xml"
